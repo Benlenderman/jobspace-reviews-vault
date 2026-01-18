@@ -18,10 +18,7 @@ services:
       - key: PORT
         value: 3000
       - key: CORS_ORIGIN
-        fromService:
-          type: web
-          name: jobspace-frontend
-          envVarKey: RENDER_EXTERNAL_URL
+        value: "*"
 
   # Frontend
   - type: web

@@ -2,8 +2,10 @@
 
 ## 🌐 URL ציבורי:
 ```
-https://itchy-foxes-cover.loca.lt
+https://plain-snakes-care.loca.lt
 ```
+
+**Updated:** 2026-01-18 18:56
 
 **כל אחד באינטרנט יכול לגשת לURL הזה!**
 
@@ -25,7 +27,7 @@ Password: 2wsx@WSX
 
 **Admin Panel:**
 ```
-https://itchy-foxes-cover.loca.lt/admin/login
+https://plain-snakes-care.loca.lt/admin/login
 ```
 
 ---
@@ -34,7 +36,7 @@ https://itchy-foxes-cover.loca.lt/admin/login
 
 ### קיר ביקורות (Reviews Wall):
 ```
-https://itchy-foxes-cover.loca.lt/reviews/jobspace
+https://plain-snakes-care.loca.lt/reviews/jobspace
 ```
 
 ### דף Incentive (עם הנחות):
@@ -93,7 +95,7 @@ npx localtunnel --port 5173
 ## 🎬 כיצד להשתמש:
 
 ### 1. צור Collection חדש (Admin):
-1. לך ל: `https://itchy-foxes-cover.loca.lt/admin/login`
+1. לך ל: `https://plain-snakes-care.loca.lt/admin/login`
 2. התחבר עם: `benlenderman2@gmail.com` / `2wsx@WSX`
 3. לך ל-**Collections**
 4. לחץ **"Create Collection"**
@@ -163,7 +165,7 @@ npx vercel
 
 שתף את הURL עם מי שאתה רוצה:
 ```
-https://itchy-foxes-cover.loca.lt
+https://plain-snakes-care.loca.lt
 ```
 
 🤖 **Built with Claude Code**
@@ -171,4 +173,5 @@ https://itchy-foxes-cover.loca.lt
 ---
 
 נוצר: 2026-01-18 18:15
+עודכן: 2026-01-18 18:56
 סטטוס: ✅ LIVE

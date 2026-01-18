@@ -30,7 +30,8 @@ services:
     environment:
       MONGODB_URI: mongodb://admin:${MONGO_PASSWORD:-changeme123}@mongodb:27017/jobspace_reviews_vault?authSource=admin
       JWT_SECRET: ${JWT_SECRET:-change-this-in-production-random-secret-key-123456789}
-      REFRESH_TOKEN_SECRET: ${REFRESH_TOKEN_SECRET:-change-this-refresh-token-secret-987654321}
+      JWT_REFRESH_SECRET: ${REFRESH_TOKEN_SECRET:-change-this-refresh-token-secret-987654321}
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY:-0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef}
       NODE_ENV: production
       PORT: 3000
       CORS_ORIGIN: ${FRONTEND_URL:-http://localhost:5173}

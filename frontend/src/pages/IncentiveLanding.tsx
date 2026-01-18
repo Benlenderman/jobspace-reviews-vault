@@ -2,12 +2,11 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
-import { apiClient } from '../api/client';
 
 export default function IncentiveLanding() {
   const { publicToken } = useParams<{ publicToken: string }>();
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const [selectedOption, setSelectedOption] = useState<'video' | 'google' | null>(null);
 
   const { data: googleReviewData } = useQuery({

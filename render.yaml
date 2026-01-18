@@ -3,7 +3,8 @@ services:
   - type: web
     name: jobspace-backend
     env: docker
-    dockerfilePath: ./backend/Dockerfile
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
     envVars:
       - key: MONGODB_URI
         value: mongodb+srv://benlenderman2_db_user:aHFqz2gXopqc23hn@jobspace.jv2ulxd.mongodb.net/jobspace_reviews_vault?retryWrites=true&w=majority&appName=jobspace
@@ -18,16 +19,14 @@ services:
       - key: PORT
         value: 3000
       - key: CORS_ORIGIN
-        value: "*"
+        value: https://jobspace-frontend.onrender.com
 
   # Frontend
   - type: web
     name: jobspace-frontend
     env: docker
-    dockerfilePath: ./frontend/Dockerfile
+    rootDir: frontend
+    dockerfilePath: ./Dockerfile
     envVars:
       - key: VITE_API_URL
-        fromService:
-          type: web
-          name: jobspace-backend
-          envVarKey: RENDER_EXTERNAL_URL
+        value: https://jobspace-backend.onrender.com/api

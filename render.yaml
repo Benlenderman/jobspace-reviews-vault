@@ -1,17 +1,4 @@
 services:
-  # MongoDB Database
-  - type: pserv
-    name: mongodb
-    env: docker
-    dockerfilePath: ./Dockerfile.mongo
-    envVars:
-      - key: MONGO_INITDB_ROOT_USERNAME
-        value: admin
-      - key: MONGO_INITDB_ROOT_PASSWORD
-        generateValue: true
-      - key: MONGO_INITDB_DATABASE
-        value: jobspace_reviews_vault
-
   # Backend API
   - type: web
     name: jobspace-backend
@@ -19,13 +6,13 @@ services:
     dockerfilePath: ./backend/Dockerfile
     envVars:
       - key: MONGODB_URI
-        fromDatabase:
-          name: mongodb
-          property: connectionString
+        value: mongodb+srv://benlenderman2_db_user:aHFqz2gXopqc23hn@jobspace.jv2ulxd.mongodb.net/jobspace_reviews_vault?retryWrites=true&w=majority&appName=jobspace
       - key: JWT_SECRET
-        generateValue: true
-      - key: REFRESH_TOKEN_SECRET
-        generateValue: true
+        value: 66efd0509a2cb92e903c310ac5247ff9b519a78388a3767ee08af1b9c8a72c91
+      - key: JWT_REFRESH_SECRET
+        value: d26abcdb672872bf82709db61b3bf79a42f838c01d8ebfa9087a6c0cf82296de
+      - key: ENCRYPTION_KEY
+        value: 4c717a473438b8f606d95157b6561ddb3dead7eb64e90593967a1f831cca4489
       - key: NODE_ENV
         value: production
       - key: PORT
@@ -40,11 +27,10 @@ services:
   - type: web
     name: jobspace-frontend
     env: docker
-    dockerfilePath: ./frontend/Dockerfile.dev
+    dockerfilePath: ./frontend/Dockerfile
     envVars:
       - key: VITE_API_URL
         fromService:
           type: web
           name: jobspace-backend
           envVarKey: RENDER_EXTERNAL_URL
-          property: url

@@ -1,0 +1,69 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "approve": "Approve",
+    "reject": "Reject"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "collections": "Collections",
+    "submissions": "Submissions",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "auth": {
+    "login": "Login",
+    "email": "Email",
+    "password": "Password",
+    "loginButton": "Sign In"
+  },
+  "home": {
+    "hero": {
+      "title": "Real Stories from Real Customers",
+      "subtitle": "See what our clients are saying about their experience with JobSpace",
+      "cta": "Share Your Experience"
+    },
+    "stats": {
+      "reviews": "Reviews",
+      "rating": "Average Rating",
+      "satisfaction": "Satisfaction Rate"
+    }
+  },
+  "submit": {
+    "title": "Share Your Experience",
+    "subtitle": "We'd love to hear about your experience with JobSpace",
+    "name": "Your Name",
+    "role": "Your Role",
+    "company": "Company (Optional)",
+    "rating": "Rating",
+    "text": "Tell us about your experience",
+    "video": "Upload Video Testimonial",
+    "consent": "I consent to JobSpace using this testimonial",
+    "submit": "Submit Review",
+    "success": "Thank you for your review!",
+    "successMessage": "Your submission has been received and is pending approval."
+  },
+  "admin": {
+    "dashboard": {
+      "title": "Dashboard",
+      "totalSubmissions": "Total Submissions",
+      "pendingReviews": "Pending Reviews",
+      "approvedReviews": "Approved Reviews"
+    },
+    "submissions": {
+      "title": "Submissions",
+      "status": "Status",
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "all": "All"
+    }
+  }
+}

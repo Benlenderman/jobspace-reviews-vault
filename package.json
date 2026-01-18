@@ -1,0 +1,23 @@
+{
+  "name": "jobspace-reviews-vault",
+  "version": "1.0.0",
+  "description": "JobSpace Reviews Vault - Video Testimonials & Google Reviews",
+  "private": true,
+  "scripts": {
+    "start": "./start.sh",
+    "stop": "./stop.sh",
+    "reset": "./reset.sh",
+    "logs": "docker compose logs -f",
+    "logs:backend": "docker compose logs -f backend",
+    "logs:frontend": "docker compose logs -f frontend",
+    "seed": "docker compose exec backend npm run seed"
+  },
+  "keywords": [
+    "testimonials",
+    "reviews",
+    "video",
+    "google-reviews"
+  ],
+  "author": "",
+  "license": "MIT"
+}

@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7
+    container_name: jobspace-reviews-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - jobspace-network
+
+  backend:
+    build: ./backend
+    container_name: jobspace-reviews-backend
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      MONGODB_URI: mongodb://mongodb:27017/jobspace_reviews_vault
+      JWT_SECRET: your-super-secret-jwt-key-min-32-chars-change-in-production
+      JWT_REFRESH_SECRET: your-super-secret-refresh-key-min-32-chars-change-in-production
+      ENCRYPTION_KEY: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
+      CORS_ORIGIN: http://localhost:5173
+      UPLOAD_DIR: /app/uploads
+      GOOGLE_PLACES_API_KEY: ${GOOGLE_PLACES_API_KEY:-}
+      GOOGLE_PLACE_ID: ${GOOGLE_PLACE_ID:-}
+    volumes:
+      - uploads_data:/app/uploads
+    depends_on:
+      - mongodb
+    networks:
+      - jobspace-network
+    command: sh -c "npm run seed && npm start"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: jobspace-reviews-frontend
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_URL: http://localhost:3000/api
+    volumes:
+      - ./frontend/src:/app/src
+    depends_on:
+      - backend
+    networks:
+      - jobspace-network
+
+volumes:
+  mongodb_data:
+  uploads_data:
+
+networks:
+  jobspace-network:
+    driver: bridge

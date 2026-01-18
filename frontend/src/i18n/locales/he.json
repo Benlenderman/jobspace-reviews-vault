@@ -1,0 +1,69 @@
+{
+  "common": {
+    "loading": "טוען...",
+    "error": "שגיאה",
+    "submit": "שלח",
+    "cancel": "ביטול",
+    "save": "שמור",
+    "delete": "מחק",
+    "edit": "ערוך",
+    "close": "סגור",
+    "approve": "אשר",
+    "reject": "דחה"
+  },
+  "nav": {
+    "dashboard": "לוח בקרה",
+    "collections": "אוספים",
+    "submissions": "הגשות",
+    "settings": "הגדרות",
+    "logout": "התנתק"
+  },
+  "auth": {
+    "login": "התחברות",
+    "email": "אימייל",
+    "password": "סיסמה",
+    "loginButton": "כניסה"
+  },
+  "home": {
+    "hero": {
+      "title": "סיפורים אמיתיים מלקוחות אמיתיים",
+      "subtitle": "ראו מה הלקוחות שלנו אומרים על החוויה שלהם עם JobSpace",
+      "cta": "שתפו את החוויה שלכם"
+    },
+    "stats": {
+      "reviews": "ביקורות",
+      "rating": "ציון ממוצע",
+      "satisfaction": "שביעות רצון"
+    }
+  },
+  "submit": {
+    "title": "שתפו את החוויה שלכם",
+    "subtitle": "נשמח לשמוע על החוויה שלכם עם JobSpace",
+    "name": "שם מלא",
+    "role": "תפקיד",
+    "company": "חברה (אופציונלי)",
+    "rating": "דירוג",
+    "text": "ספרו לנו על החוויה שלכם",
+    "video": "העלו סרטון המלצה",
+    "consent": "אני מסכים ש-JobSpace תשתמש בהמלצה זו",
+    "submit": "שלח ביקורת",
+    "success": "תודה על הביקורת!",
+    "successMessage": "ההגשה שלך התקבלה וממתינה לאישור."
+  },
+  "admin": {
+    "dashboard": {
+      "title": "לוח בקרה",
+      "totalSubmissions": "סך הגשות",
+      "pendingReviews": "ביקורות ממתינות",
+      "approvedReviews": "ביקורות מאושרות"
+    },
+    "submissions": {
+      "title": "הגשות",
+      "status": "סטטוס",
+      "pending": "ממתין",
+      "approved": "מאושר",
+      "rejected": "נדחה",
+      "all": "הכל"
+    }
+  }
+}

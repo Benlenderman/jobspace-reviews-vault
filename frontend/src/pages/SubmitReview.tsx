@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { apiClient } from '../api/client';
+import { CloudinaryUploadWidget, CloudinaryUploadResult } from '../components/CloudinaryUploadWidget';
 
 export default function SubmitReview() {
   const { publicToken } = useParams<{ publicToken: string }>();
@@ -16,23 +17,32 @@ export default function SubmitReview() {
     text: '',
     consent: false,
   });
-  const [videoFile, setVideoFile] = useState<File | null>(null);
+  const [cloudinaryVideo, setCloudinaryVideo] = useState<CloudinaryUploadResult | null>(null);
+  const [uploadError, setUploadError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+
+  const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || '';
+  const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || '';
 
   const mutation = useMutation({
     mutationFn: async () => {
-      const data = new FormData();
-      data.append('personName', formData.personName);
-      data.append('personRole', formData.personRole);
-      data.append('companyName', formData.companyName);
-      data.append('rating', formData.rating.toString());
-      data.append('text', formData.text);
-      data.append('consent', 'true');
-      if (videoFile) {
-        data.append('video', videoFile);
+      if (!cloudinaryVideo) {
+        throw new Error('No video uploaded');
       }
 
-      return apiClient.public.submit(publicToken!, data);
+      return apiClient.public.submitCloudinary(publicToken!, {
+        cloudinaryPublicId: cloudinaryVideo.public_id,
+        cloudinaryUrl: cloudinaryVideo.secure_url,
+        videoFormat: cloudinaryVideo.format,
+        videoDuration: cloudinaryVideo.duration,
+        videoBytes: cloudinaryVideo.bytes,
+        personName: formData.personName,
+        personRole: formData.personRole,
+        companyName: formData.companyName,
+        rating: formData.rating,
+        text: formData.text,
+        consent: true,
+      });
     },
     onSuccess: (response: any) => {
       // Redirect to thank you page with discount code
@@ -46,7 +56,7 @@ export default function SubmitReview() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!videoFile) {
+    if (!cloudinaryVideo) {
       alert('Please upload a video');
       return;
     }
@@ -55,6 +65,16 @@ export default function SubmitReview() {
       return;
     }
     mutation.mutate();
+  };
+
+  const handleUploadSuccess = (result: CloudinaryUploadResult) => {
+    setCloudinaryVideo(result);
+    setUploadError(null);
+  };
+
+  const handleUploadError = (error: any) => {
+    setUploadError(error.message || 'Upload failed');
+    setCloudinaryVideo(null);
   };
 
   if (success) {
@@ -156,18 +176,54 @@ export default function SubmitReview() {
 
             <div>
               <label className="block text-sm font-medium mb-2">{t('submit.video')}</label>
-              <input
-                type="file"
-                required
-                accept="video/mp4,video/webm,video/quicktime"
-                onChange={(e) => setVideoFile(e.target.files?.[0] || null)}
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-              />
-              {videoFile && (
-                <p className="text-sm text-gray-600 mt-2">
-                  Selected: {videoFile.name} ({(videoFile.size / 1024 / 1024).toFixed(2)} MB)
-                </p>
-              )}
+              <CloudinaryUploadWidget
+                cloudName={cloudName}
+                uploadPreset={uploadPreset}
+                onSuccess={handleUploadSuccess}
+                onError={handleUploadError}
+                maxDuration={240}
+              >
+                {({ openWidget }) => (
+                  <div>
+                    <button
+                      type="button"
+                      onClick={openWidget}
+                      className="w-full px-4 py-3 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 transition"
+                    >
+                      <div className="flex flex-col items-center gap-2">
+                        <svg
+                          className="w-8 h-8 text-gray-400"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                          />
+                        </svg>
+                        <span className="text-sm text-gray-600">
+                          {cloudinaryVideo ? 'Change Video' : 'Upload Video (Max 4 minutes)'}
+                        </span>
+                      </div>
+                    </button>
+                    {cloudinaryVideo && (
+                      <div className="mt-2 p-3 bg-green-50 border border-green-200 rounded-lg">
+                        <p className="text-sm text-green-800 font-medium">✓ Video uploaded successfully</p>
+                        <p className="text-xs text-green-600 mt-1">
+                          Duration: {Math.round(cloudinaryVideo.duration)}s |
+                          Size: {(cloudinaryVideo.bytes / 1024 / 1024).toFixed(2)}MB
+                        </p>
+                      </div>
+                    )}
+                    {uploadError && (
+                      <p className="text-sm text-red-600 mt-2">{uploadError}</p>
+                    )}
+                  </div>
+                )}
+              </CloudinaryUploadWidget>
             </div>
 
             <div className="flex items-start gap-3">

@@ -20,13 +20,17 @@ services:
       NODE_ENV: development
       PORT: 3000
       MONGODB_URI: mongodb://mongodb:27017/jobspace_reviews_vault
-      JWT_SECRET: your-super-secret-jwt-key-min-32-chars-change-in-production
-      JWT_REFRESH_SECRET: your-super-secret-refresh-key-min-32-chars-change-in-production
-      ENCRYPTION_KEY: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
-      CORS_ORIGIN: http://localhost:5173
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY}
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:5173}
       UPLOAD_DIR: /app/uploads
       GOOGLE_PLACES_API_KEY: ${GOOGLE_PLACES_API_KEY:-}
       GOOGLE_PLACE_ID: ${GOOGLE_PLACE_ID:-}
+      CLOUDINARY_CLOUD_NAME: ${CLOUDINARY_CLOUD_NAME:-}
+      CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY:-}
+      CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET:-}
+      CLOUDINARY_UPLOAD_PRESET: ${CLOUDINARY_UPLOAD_PRESET:-}
     volumes:
       - uploads_data:/app/uploads
     depends_on:
@@ -43,7 +47,9 @@ services:
     ports:
       - "5173:5173"
     environment:
-      VITE_API_URL: http://localhost:3000/api
+      VITE_API_URL: ${API_URL:-http://localhost:3000/api}
+      VITE_CLOUDINARY_CLOUD_NAME: ${CLOUDINARY_CLOUD_NAME:-}
+      VITE_CLOUDINARY_UPLOAD_PRESET: ${CLOUDINARY_UPLOAD_PRESET:-}
     volumes:
       - ./frontend/src:/app/src
     depends_on:

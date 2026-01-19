@@ -11,6 +11,10 @@ const configSchema = z.object({
   UPLOAD_DIR: z.string().default('/app/uploads'),
   GOOGLE_PLACES_API_KEY: z.string().optional(),
   GOOGLE_PLACE_ID: z.string().optional(),
+  CLOUDINARY_CLOUD_NAME: z.string().min(1),
+  CLOUDINARY_API_KEY: z.string().min(1),
+  CLOUDINARY_API_SECRET: z.string().min(1),
+  CLOUDINARY_UPLOAD_PRESET: z.string().min(1),
 });
 
 export type Config = z.infer<typeof configSchema>;

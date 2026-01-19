@@ -5,10 +5,113 @@ import { GoogleReview } from '../../models/GoogleReview.js';
 import { saveUploadedFile } from '../../utils/fileStore.js';
 import { generateDiscountCode, getDiscountPercent } from '../../utils/discountCode.js';
 import { getSetting } from '../../models/Settings.js';
+import { generateUploadSignature } from '../../utils/cloudinary.js';
 
 const MAX_FILE_SIZE = 200 * 1024 * 1024;
 
 export async function publicRoutes(app: FastifyInstance): Promise<void> {
+  // Get Cloudinary upload signature for direct upload
+  app.get('/public/cloudinary-signature/:publicToken', async (request, reply) => {
+    const { publicToken } = request.params as { publicToken: string };
+
+    const collection = await ReviewCollection.findOne({
+      publicToken,
+      isActive: true,
+    });
+
+    if (!collection) {
+      return reply.code(404).send({ error: 'Collection not found or inactive' });
+    }
+
+    const signatureData = generateUploadSignature();
+
+    return {
+      success: true,
+      ...signatureData,
+    };
+  });
+
+  // Submit review with Cloudinary video URL
+  app.post('/public/submit-cloudinary/:publicToken', async (request, reply) => {
+    const { publicToken } = request.params as { publicToken: string };
+
+    const collection = await ReviewCollection.findOne({
+      publicToken,
+      isActive: true,
+    });
+
+    if (!collection) {
+      return reply.code(404).send({ error: 'Collection not found or inactive' });
+    }
+
+    const body = request.body as any;
+    const {
+      cloudinaryPublicId,
+      cloudinaryUrl,
+      videoFormat,
+      videoDuration,
+      videoBytes,
+      personName,
+      personRole,
+      companyName,
+      rating,
+      text,
+      consent,
+    } = body;
+
+    if (!cloudinaryPublicId || !cloudinaryUrl || !personName || !personRole || !text || !consent) {
+      return reply.code(400).send({
+        error: 'Missing required fields',
+      });
+    }
+
+    // Validate 4-minute maximum duration
+    if (videoDuration > 240) {
+      return reply.code(400).send({
+        error: 'Video duration exceeds 4 minutes maximum',
+      });
+    }
+
+    if (text.length > 1000) {
+      return reply.code(400).send({ error: 'Text too long (max 1000 chars)' });
+    }
+
+    // Generate unique discount code for video submission
+    const discountCode = generateDiscountCode('video');
+    const discountPercent = getDiscountPercent('video');
+
+    const submission = new ReviewSubmission({
+      collectionId: collection._id,
+      status: 'pending',
+      personName,
+      personRole,
+      companyName: companyName || undefined,
+      rating: parseInt(rating) || 5,
+      text,
+      consent,
+      consentAt: new Date(),
+      source: 'manual',
+      discountCode,
+      discountPercent,
+      video: {
+        originalFilename: `${cloudinaryPublicId}.${videoFormat}`,
+        mimeType: `video/${videoFormat}`,
+        sizeBytes: videoBytes || 0,
+        storagePath: cloudinaryUrl,
+      },
+    });
+
+    await submission.save();
+
+    return {
+      success: true,
+      submissionId: submission._id,
+      discountCode,
+      discountPercent,
+    };
+  });
+
+  // Legacy route: direct file upload (fallback)
   app.post('/public/submit/:publicToken', async (request, reply) => {
     const { publicToken } = request.params as { publicToken: string };
 

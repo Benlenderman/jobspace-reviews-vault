@@ -99,6 +99,8 @@ class ApiClient {
   public = {
     submit: (publicToken: string, formData: FormData) =>
       this.post(`/public/submit/${publicToken}`, formData),
+    submitCloudinary: (publicToken: string, data: any) =>
+      this.post(`/public/submit-cloudinary/${publicToken}`, data),
     wall: (slug: string) => this.get(`/public/wall/${slug}`),
   };
 
